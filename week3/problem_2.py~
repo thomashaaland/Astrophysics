@@ -1,0 +1,10 @@
+from scitools.std import *
+
+x = linspace(1,10, 1001)
+def f(x):
+    return ((x*exp(x))/(exp(x)-1))-5
+
+def delta(x):
+    return (((x*exp(x))/(exp(x)-1))-5)**2
+
+plot(x, delta(x))

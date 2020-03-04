@@ -1,0 +1,351 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage[latin1]{inputenc}
+\usepackage{fancyvrb}
+\DefineVerbatimEnvironment{code}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{example}{Verbatim}{fontsize=\small}
+
+% Shortcuts for including equations
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\def\i{\hat{i}}
+\def\j{\hat{j}}
+\def\k{\hat{k}}
+
+% Document formatting
+\setlength{\parindent}{0mm}
+\setlength{\parskip}{1.5mm}
+
+% Hyper refs
+\usepackage[colorlinks]{hyperref}
+
+\usepackage{listings}
+\lstset{language=python}
+\lstset{basicstyle=\ttfamily\tiny}
+\lstset{frame=single}
+\lstset{stringstyle=\ttfamily}
+\lstset{keywordstyle=\color{red}\bfseries}
+\lstset{commentstyle=\itshape\color{blue}}
+\lstset{showspaces=false}
+\lstset{showstringspaces=false}
+\lstset{showtabs=true}
+\lstset{breaklines}
+\lstdefinestyle{prt}{frame=none,basicstyle=\ttfamily\small}
+
+\newcounter{subproject}
+\renewcommand{\thesubproject}{\number{subproject}}
+\newenvironment{subproj}{
+\begin{description}
+\item[\refstepcounter{subproject}(\thesubproject)]
+}{\end{description}}
+
+%------------------------------------------------------------
+\begin{document} 
+{\huge\bf Ast1100 Oblig 5}
+\newline Thomas Haaland
+
+
+Bevaring av relativistisk energi
+
+\newpage
+
+{\bf Introduksjon}
+\newline
+Et elektron og et positron beveger seg mot hverandre med hastighet $v_e=-0.995$ for elektronet og $v_p=0.995$ for positronet sett fra laboratoriet. De kolliderer og dermed annihilerer og gir fra seg to fotoner. Ett foton i positiv x retning og ett i negativ x retning. Massen til elektronet og positronet er masse $m_e=9.1094E-31$, og de har lik masse.
+
+{\bf oppgave 1}
+\newline
+Skal finne hastigheten til positronet sett fra elektronet. Jeg kaller referanse systemet til elektronet for det merkede systemet. I det merkede systemet har elektronet hastighet
+
+\beq
+(V_{\mu}^{e^-})^{'}=\gamma_{e^-}^{'}
+\left[ \begin{array}{c}
+        1\\
+	v_{e^-}^{'}
+       \end{array}\right]
+=\left[ \begin{array}{c}
+         1\\
+	0
+        \end{array} \right]
+\eeq
+
+siden $v_{e^-}^{'}=0$, og $\gamma_{e^-}^{'}=1$.
+
+I det umerkede systemet har positronet hastighet 
+\beq
+V_{nu}^{e^+}=
+\gamma_{e^+}
+\left[ \begin{array}{c}
+        1\\
+	v_{e^+}
+       \end{array} \right]
+\eeq
+
+For å finne hastigheten til positronet i det merkede systemet, må hastigheten til postitronet transformeres til det merkede systemet. Det merkede systemet beveger seg med hastigheten $v_{rel}=-0.995$ langs x- aksen, og $\gamma_{rel}=\frac{1}{\sqrt{1-v_{rel}^2}}$. 
+
+For å gjøre dette bruker jeg Lorentz matrisen $C_{\mu\nu}$. Den transformerer en $4-$vektor fra 'mitt' system til et annet. Denne matrisen ble utledet i forrige ukes oppgaver.
+
+\beq
+(V_{\mu}^{e^+})^{'}=C_{\mu \nu}V_{\nu}^{e^+}=
+\left[ \begin{array}{cc}
+        \gamma_{rel} & -v_ {rel} \gamma_{rel} \\
+	-v_{rel}\gamma_{rel} & \gamma_{rel}
+       \end{array} \right]
+\left[ \begin{array}{c}
+        \gamma_{e^+} \\
+	v_{e^+} \gamma_{e^+}
+       \end{array} \right]
+\eeq
+Som gir ved matrise multiplikasjon
+\beq
+(V_{\mu}^{e^+})^{'}=
+\left[ \begin{array}{c}
+        \gamma_{e^+}^{'} \\
+	v_{e^+}^{'}
+       \end{array} \right]
+=
+\left[ \begin{array}{c}
+        \gamma_{e^+} \gamma_{rel}-v_{e^+} \gamma_{e^+} v_{rel} \gamma_{rel} \\
+	v_{e^+} \gamma_{e^+} \gamma_{rel} - \gamma_{e^+} v_{rel} \gamma_{rel}
+       \end{array} \right]
+\eeq
+
+For å få $v_{e^+}^{'}$ deles komponent $(V_{\nu}^{e^+})^{'}_1$ på $(V_{\nu}^{e^+})^{'}_0$ som gir
+
+\beq
+v_{e^+}^{'}= \frac{v_{e^+}^{'}\gamma_{e^+}^{'}}{\gamma_{e^+}^{'}}=\frac{\gamma_{e^+}\gamma_{rel}(v_{e^+}-v_{rel})}{\gamma_{e^+}\gamma_{rel}(1-v_{e^+}v_{rel}}=\frac{v_{e^+}-v_{rel}}{1-v_{e^+}v_{rel}}
+\eeq
+
+Siden $v_{e^+}=-v_{rel}$ blir likning $(5)$
+
+\beq
+v_{e^+}^{'}=
+\frac{2v_{e^+}}{1+(v_{e^+})^2}= 0.99998744
+\eeq
+og er dimensjonsløs.
+
+{\bf Oppgave 2}
+
+Skal skrive ned momenergien til positronet og elektronet i referanse systemet til laboratoriet, altså det umerkede systemet. Skriver først ut momenergien til elektronet som uttrykt på side 11 i ukesoppgavene:
+
+\beq
+P_{\nu}^{e^-}=m_eV_{\nu}^{e^-}=m_e
+\left[ \begin{array}{c}
+        \gamma_{e^-} \\
+	v_{e^-}\gamma_{e^-}
+       \end{array} \right]
+=
+\left[ \begin{array}{c}
+        9.1208E-30 \\
+	-9.0752E-30
+       \end{array} \right]
+kg
+\eeq
+
+Momenergien til positronet blir da
+
+\beq
+P_{\nu}^{e^+}=m_eV_{\nu}^{e^+}=m_e
+\left[ \begin{array}{c}
+        \gamma_{e^+} \\
+	v_{e^+}\gamma_{e^+}
+       \end{array} \right]
+=
+\left[ \begin{array}{c}
+        9.1208E-30 \\
+	9.0752E-30
+       \end{array} \right]
+kg
+\eeq
+
+{\bf Oppgave 3}
+
+Skal skrive momenergien til positronet og elektronet i det merkede systemet. 
+
+For elektronet bruker jeg likning (1) som sier at i det merkede systemet har ikke elektronet noen hastighet, men har derimot kun hvilemasse. Momenergien kan dermed skrives
+
+\beq
+(P_{\mu}^{e^-})^{'}=m_e(V_{\mu}^{e^-})^{'}=m_e
+\left[ \begin{array}{c}
+        1 \\
+	0
+       \end{array} \right]
+=
+\left[ \begin{array}{c}
+        9.1094E-31 \\
+	0
+       \end{array} \right]
+kg
+\eeq
+
+Kunne også brukt Lorentz matrisen for å få samme resultat:
+
+\beq
+(P_{\mu}^{e^-})^{'}=m_e(V_{\mu}^{e^-})^{'}=m_eC_{\mu\nu}V_{\nu}^{e^-}
+\eeq
+
+I dette tilfellet er $v_{e^-}=v_{rel}$.
+
+\beq
+\left[ \begin{array}{c}
+        \gamma_{e^-}^{'} \\
+	v_{e^-}^{'}
+       \end{array} \right]
+=
+\left[ \begin{array}{c}
+        \gamma_{e^-} \gamma_{rel}-v_{e^-} \gamma_{e^-} v_{rel} \gamma_{rel} \\
+	v_{e^-} \gamma_{e^-} \gamma_{rel} - \gamma_{e^-} v_{rel} \gamma_{rel}
+       \end{array} \right]
+\eeq
+
+For positronet brukes likning (6) for å finne momenergien siden
+
+\beq
+(P_{\mu}^{e^+})^{'}=m_e(V_{\mu}^{e^+})^{'}=m_e
+\left[\begin{array}{c}
+       \gamma_{e^+}^{'} \\
+	v_{e^+}^{'}\gamma_{e^+}^{'}
+      \end{array} \right]
+=m_e
+\left[ \begin{array}{c}
+        \frac{1}{\sqrt{1-(v_{e^+}^{'})^2}} \\
+	\frac{v_{e^+}^{'}}{\sqrt{1-(v_{e^+}^{'})^2}}
+       \end{array} \right]
+\eeq
+Satt inn med tall gir likning (10)
+\beq
+(P_{\mu}^{e^+})^{'}
+=
+\left[ \begin{array}{c}
+        1.817529E-28 \\
+	1.817530E-28
+       \end{array} \right]
+kg
+\eeq
+
+{\bf Oppgave 4}
+\newline
+Siden energi kan skrives som
+
+\beq
+P_{\mu}^{\gamma}P_{\gamma}^{\mu}=E_{\gamma}^2-p_{\gamma}^2=m^2V_{\mu}^{\gamma}V_{\gamma}^{\mu}=m^2
+\eeq
+
+og for fotoner er $m=0$ slik at 
+
+\beq
+E_{\gamma}^2=p_{\gamma}^2 \Rightarrow E_{\gamma}=_-^+p_{\gamma}
+\eeq
+
+Da blir $4-$vektor
+
+\beq
+P_{\mu}^{\gamma}=
+\left[ \begin{array}{c}
+        E \\
+	_-^+p \\
+	0 \\
+	0 \\
+       \end{array} \right]
+=
+\left[ \begin{array}{c}
+        E \\
+	E \\
+	0 \\
+	0
+       \end{array} \right]
+\eeq
+ 
+{\bf Oppgave 5}
+
+Bruker bevaring av energi for å se hvor stor energi de to fotonene som dannes ved annhilasjonen burde ha sett fra laboratoriet. Legger sammen bevegelsesmengde til elektronet og positronet for å se om systemet har overskudd av bevegelses mengde i den ene eller andre retningen. Er kollisjonen assymetrisk burde det ene fotonet få større bevegelsesmengde enn det andre, og dermed også større energi.
+
+\beq
+P_{\mu}^{e^-}+P_{\mu}^{e^+}=
+\left[ \begin{array}{c}
+        m_e\gamma_{e^-}+m_e\gamma_{e^+} \\
+	m_ev_{e^-}\gamma_{e^-}+m_ev_{e^+}\gamma_{e^+}
+       \end{array} \right]
+=
+\left[ \begin{array}{c}
+        2E \\
+	0
+       \end{array} \right]
+kg
+\eeq
+
+Så total bevegelses mengde er $0$. Det vil si at $E$ er fordelt likt på to fotoner med hastighet motsatt rettet hverandre. 
+
+{\bf Oppgave 6}
+
+I denne oppgaven skal jeg finne bølgelengden til de to fotonene. Det gjøres med formelen 
+\beq
+E = \frac{hc}{\lambda}
+\eeq
+
+Her er $h$ plancks konstant, $c$ lyshastigheten og $\lambda$ bølgelengde.
+
+Løser for $\lambda$ gir
+
+\beq
+\lambda=\frac{hc}{E}\Rightarrow\lambda_{Newton}=\frac{hc}{Ec^2}=\frac{h}{Ec}
+\eeq
+
+der $\lambda_{Newton}$ er bølgelengde i meter.
+
+Fra likning (8) har vi at $E=m_e\gamma_e=9.1208E-31$. Setter inn i likning (17) og får
+
+\beq
+\lambda_{Newton}=\frac{6.626E-34}{9.1208E-31\times 300000}m=2.29nm
+\eeq
+
+{\bf Oppgave 7}
+\newline
+Skal finne $E^{'}$ for fotonet. Siden fotonet er masseløst kan $4-$vektoren skrives som i likning (14). Denne vektoren kan Lorentz matrisen brukes på. Da får vi
+
+\beq
+P^{'}_{\mu}=C_{\mu\nu}P_{\nu}\Rightarrow
+\left[ \begin{array}{c}
+        E^{'} \\
+	E^{'}
+       \end{array} \right]
+=
+\left[ \begin{array}{cc}
+        \gamma_{rel} & -v_{rel}\gamma_{rel} \\
+	-v_{rel}\gamma_{rel} & \gamma_{rel}
+       \end{array} \right]
+\left[ \begin{array}{c}
+        E \\
+	E
+       \end{array} \right]
+\eeq
+
+Setter $\gamma_{rel}=\gamma$, $v_{rel}=v$
+\beq
+\left[ \begin{array}{c}
+        E^{'} \\
+	E^{'}
+       \end{array} \right]
+=
+\left[ \begin{array}{c}
+        E\gamma-Ev\gamma \\
+	E\gamma-Ev\gamma
+       \end{array} \right]
+=E
+\left[ \begin{array}{c}
+        \gamma-v\gamma \\
+	\gamma-v\gamma
+       \end{array} \right]
+\eeq
+
+Dermed blir
+
+\beq
+E^{'}=E\gamma(1-v)
+\eeq
+
+Som var det vi skulle vise.
+
+\end{document}

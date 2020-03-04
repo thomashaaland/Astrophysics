@@ -1,0 +1,43 @@
+from scitools.all import *
+
+class Boltz:
+    def __init__(self):
+        #variables
+        self.c = 3.*10**8 #speed of light
+        self.h = 6.62607*10**(-34) #Plancks constant
+        self.k = 1.38065*10**(-23) #Boltzmann constant
+        self.T = 5778. #Temperature on the sun's surface
+        self.sigma = 2*pi**5*self.k**4/(15*self.h**3*self.c**2)
+
+        #Calculations and functions
+  #      self.boltz_fun()
+        self.flux()
+#        self.int_box()
+
+    def boltz_fun(self, wl):
+        self.wl = wl*10**(-9)
+        self.boltz = (2*self.h*self.c**2)/(self.wl**5)*(1/(exp((self.h*self.c)/(self.k*self.T*self.wl))-1))
+        return self.boltz
+
+    def flux(self):
+        self.flux = self.sigma*self.T**4
+    
+    def int_box(self, lambda_fun):
+        sum = 0
+        self.lambda_fun = lambda_fun*10**(-9)
+        print self.boltz_fun(10)
+        for i in range(len(self.lambda_fun)-1):
+            sum += self.boltz_fun((self.lambda_fun[i]-self.lambda_fun[i+1])/2+self.lambda_fun[i])*(self.lambda_fun[i]-self.lambda_fun[i+1])
+        self.integral = sum
+
+    
+#____
+#MAIN
+
+lambd = linspace(100,3000,101)
+Boltz = Boltz()
+
+func = Boltz.boltz_fun(lambd)
+plot(lambd,func)
+
+print Boltz.int_box(lambd)

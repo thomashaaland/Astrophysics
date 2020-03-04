@@ -1,0 +1,140 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage[latin1]{inputenc}
+\usepackage{fancyvrb}
+\DefineVerbatimEnvironment{code}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{example}{Verbatim}{fontsize=\small}
+
+% Shortcuts for including equations
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\def\i{\hat{i}}
+\def\j{\hat{j}}
+\def\k{\hat{k}}
+
+% Document formatting
+\setlength{\parindent}{0mm}
+\setlength{\parskip}{1.5mm}
+
+% Hyper refs
+\usepackage[colorlinks]{hyperref}
+
+\usepackage{listings}
+\lstset{language=python}
+\lstset{basicstyle=\ttfamily\tiny}
+\lstset{frame=single}
+\lstset{stringstyle=\ttfamily}
+\lstset{keywordstyle=\color{red}\bfseries}
+\lstset{commentstyle=\itshape\color{blue}}
+\lstset{showspaces=false}
+\lstset{showstringspaces=false}
+\lstset{showtabs=true}
+\lstset{breaklines}
+\lstdefinestyle{prt}{frame=none,basicstyle=\ttfamily\small}
+
+\newcounter{subproject}
+\renewcommand{\thesubproject}{\number{subproject}}
+\newenvironment{subproj}{
+\begin{description}
+\item[\refstepcounter{subproject}(\thesubproject)]
+}{\end{description}}
+
+%------------------------------------------------------------
+\begin{document} 
+{\huge\bf Ast1100 Oblig 7}
+\newline Thomas Haaland
+
+
+Virial teoremet
+
+\newpage
+
+{\bf Oppgave 2.3}
+\newline
+Skal finne et uttrykk for massen til et enkelt legeme i et system av flere legemer ved hjelp av Virial teoremet:
+
+Har at 
+\beq
+\left<K\right>=-\frac{1}{2}\left<U\right>
+\eeq
+
+v/ virial teoremet for et system i likevekt. Det vil si at systemet ikke trekker seg sammen eller utvider seg i noen nevneverdig grad.
+
+v/ ergodic hypotesen har vi at
+
+\beq
+\lim_{N \to \infty} \frac{1}{N}\sum_{i=1}^N K_i = -\frac{1}{2}\lim_{N \to \infty} \frac{1}{N} \sum_{i=1}^N U_i
+\eeq
+
+Dette uttrykket er likt eq.1, og tilnærmet likt for store og endelige $N$. 
+
+Finner uttrykk for kinetisk energi $K_i$ og potensiell energi $U_i$ for galakse $i$. $m$ er antatt lik for alle galakser:
+
+\beq
+K_i = \frac{1}{2}mv_i^2
+\eeq
+
+\beq
+U_i=\sum_{j>i}^N\frac{Gm^2}{r_{ij}}
+\eeq
+
+I eq.4 må $j>i$ for å unngå å summere over samme par to ganger. $r_{ij}$ er posisjonsvektoren fra $i$ til $j$. Løser for $m$:
+
+\beq
+\frac{1}{N}\sum_{i=1}^N\frac{1}{2}mv_i^2=-\frac{1}{2}\frac{1}{N}\sum_{i=1}^N\sum_{j>i}^N-\frac{Gm^2}{r_{ij}}
+\eeq
+
+\beq
+\sum_{i=1}^Nv_i^2=\sum_{i=1}^N\sum_{j>i}^N\frac{Gm}{r_{ij}}
+\eeq
+
+\beq
+m= \frac{\sum_{i=1}^Nv_i^2}{G\sum_{i=1}^N\sum_{j>i}\frac{1}{r_{ij}}}
+\eeq
+
+Som gir masse per galakse.
+
+{\bf Oppgave 2.4 a)}
+\newline
+Skal finne hastigheten til galaksehopen relativt til jorda.
+
+
+For å finne hastigheten til hver enkelt galakse relativt til jorda brukes Dopplers formel:
+\beq
+v_{gal}=c\frac{\lambda-\lambda_0}{\lambda_0}
+\eeq
+
+Videre finner jeg $v_{(cluster)}$ ved å finne gjennomsnittet, som er hastigheten til massesenteret ved
+\beq
+v_{(cluster)}=\frac{1}{N}\sum_{i=1}^Nv_{i(gal)}
+\eeq
+
+Til slutt finner jeg galaksenes hastighet relativt til massesenteret
+
+Gjorde dette med programmet jeg har lagt ved. Hastigheten jeg fant var 
+
+$123\times10^4$ m/s.
+
+
+\beq
+v_{i(rel)}=v_{i(gal)}-v_{(cluster)} 
+\eeq
+
+{\bf Oppgave 2.4 b)}
+\newline
+Skal plotte galaksehopen som sett fra jorda. Gjorde dette med koden i vedlegget. Se figur 1.
+
+\begin{figure}
+ \centering
+ \includegraphics[scale=0.5]{plot.png}
+ \label{fig: Galaksehop}
+ \caption{Galaksehop}
+\end{figure}
+
+{\bf Oppgave 2.4 c)}
+\newline
+Skal finne massen til en galakse. Bruker formelen jeg fant i oppgave 3 for å finne massen til en enkelt galakse. Summerer over $N=100$. Fant at $m=8.7\times10^{41}$kg.
+
+\end{document}

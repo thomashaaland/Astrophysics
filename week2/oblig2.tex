@@ -1,0 +1,199 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage[latin1]{inputenc}
+\usepackage{fancyvrb}
+\DefineVerbatimEnvironment{code}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{example}{Verbatim}{fontsize=\small}
+
+% Shortcuts for including equations
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\def\i{\hat{i}}
+\def\j{\hat{j}}
+\def\k{\hat{k}}
+
+% Document formatting
+\setlength{\parindent}{0mm}
+\setlength{\parskip}{1.5mm}
+
+% Hyper refs
+\usepackage[colorlinks]{hyperref}
+
+\usepackage{listings}
+\lstset{language=python}
+\lstset{basicstyle=\ttfamily\tiny}
+\lstset{frame=single}
+\lstset{stringstyle=\ttfamily}
+\lstset{keywordstyle=\color{red}\bfseries}
+\lstset{commentstyle=\itshape\color{blue}}
+\lstset{showspaces=false}
+\lstset{showstringspaces=false}
+\lstset{showtabs=true}
+\lstset{breaklines}
+\lstdefinestyle{prt}{frame=none,basicstyle=\ttfamily\small}
+
+\newcounter{subproject}
+\renewcommand{\thesubproject}{\alph{subproject}}
+\newenvironment{subproj}{
+\begin{description}
+\item[\refstepcounter{subproject}(\thesubproject)]
+}{\end{description}}
+
+%------------------------------------------------------------
+\begin{document} 
+{\huge\bf Ast1100 Oblig 2}
+\newline Thomas Haaland
+\section{Problem 4.4, Kapittel 3}
+\paragraph{}
+{\bf Beskrivelse av problemet:}
+\newline
+Skal lage et program som leser inn data fra filer, finner bølgelengden og lysfluxen som er lest inn ved gitte tidsintervall. Bølgelengden som blir lest inn er forskyvningen av absorpsjonslinjen til $H_\alpha$ og kan brukes til å finne radiell hastighet relativt til oss som observerer rødforskyvningen. Når radiell hastighet er funnet, skal programmet finne en oscillerende funksjon som passer best mulig til bevegelsen til stjerna. Til slutt skal programmet finne massen til planeten som skaper stjernas oscillerende bevegelse. Dette kan gjøres med god sikkerhet kun for planeter som passerer foran stjerna som sett av oss på jorda.
+\newline
+\paragraph{}
+{\bf Oppgitte dataer:}
+\newline
+Vi har blitt gitt noen filer som beskriver oppførselen til $10$ stjerner. I filene er det tre kolonner med tall. Første kolonne er tidspunktet for observasjonene etter første observasjon $t=t_0=0$. Andre kolonne er ved hvilken bølgelengde det er en absorpsjonslinje som svarer til $H_\alpha$. Denne ser vi at varierer, noe som kan skje feks på grunn av unøyaktige målinger eller rødforskyvning. Det er spesielt rødforskyvning vi er interessert i her, siden rødforskyvningnene gir oss hastigheten til legemet i radiell retning. Tredje kolonne er lysfluksen, eller hvor mye lys som kommer inn fra stjerna. Her ser vi spesielt etter formørkninger, noe som kan bety at en planet passerer foran stjerna. 
+\newline
+\paragraph{}
+{\bf Løsninger:}
+\newline
+Først tar jeg for meg hvordan finne radiell hastighet, der radiell er parallelt med observatørens synsretning. Bruker Doppler's formel
+\beq
+\frac{\Delta\lambda}{\lambda_0}=\frac{v_r}{c}
+\eeq 
+for å løse for $v_r$
+\beq
+v_r=\frac{\Delta\lambda}{\lambda_0}c
+\eeq
+Der $v_r$ er radiell hastighet, $\Delta\lambda=\lambda-\lambda_0$, $\lambda$ er bølgelengde uten doppler effekt, $\lambda_0$ er observert bølgelengde og $c$ er lysfarten.
+\newline
+Finner deretter pekuliærhastigheten, som er hastigheten til massesenteret til det observerte systemet. Pekuliærhastigheten finner jeg ved gjennomsnittet 
+\beq
+v_p=\frac{1}{n}\sum_{t=0}^nv_{r}(t)
+\eeq
+der $v_p$ er pekuliærhastigheten og $v_r(t)$ er radiellhastigheten ved tidspunktet $t$.
+\newline
+Når pekuliær hastigheten er funnet, vil hastigheten til stjerna relativt til massesenteret til stjerne-planet systemet bli funnet ved
+\beq
+v_{rel}^{data}(t)=v_r(t)-v_p
+\eeq
+Til $v_{rel}^{data}(t)$ må det finnes en funksjon $v_{rel}^{modell}(t)$ som er glatt og passer godt. Antar at $v_{rel}^{data}(t)$ likner på 
+\beq
+v_{rel}^{modell}(t)=v_r^{max}cos\left(\frac{2\pi}{P}\left(t-t_0\right)\right)
+\eeq
+der $v_r^{max}$ er maksimale relative hastighet, $P$ er perioden og $t_0$ er en forskyvningsfaktor, funskjonen starter altså i $t_0$. 
+\newline
+For å finne beste konstanter brukes minste kvadraters metode.
+\beq
+\Delta\left(t_0,\space P, \space v_r^{max}\right)=\sum_{t=0}^n\left[v_{rel}^{data}(t)-v_{rel}^{modell}(t,\space t_0,\space P,\space v_r^{max})\right]^2
+\eeq
+der $t_0,\space P, \space v_r^{max}$ er rekker med spenn som settes opp med øyemål.
+\newline
+Når $P, \space v_r^{max}$ er funnet, kan disse verdiene brukes til å finne massen til planeten, gitt at inklinasjonen er nær $\frac{\pi}{2}$, ved
+\beq
+m_p=\left(\frac{m_\star^2P}{2\pi G}\right)^{\frac{1}{3}}v_r^{max}
+\eeq
+der $m_p$ er massen til planeten, $m_{\star}$ er massen til stjerna, $P$ er perioden, $G$ er newtons gravitasjonskonstant og $v_r^{max}$ er makshastighet.
+\newline
+\paragraph{}
+{\bf Kode:}
+De fleste likningene over er rett frem i programmering. Det er hovedsakelig likning $(6)$ som krever mye kode. For å finne $\Delta$ skrives koden 
+\newline
+\begin{code}
+for i in range{t0_a, t0_b}:
+	for j in range{vr_a, vr_b}:
+		for k in range{P_a, P_b}:
+			rel_vel_model = ...
+			delta = sum((rel_vel - rel_vel_model)**2
+			if delta < best_delta:
+				best_t0 = t0[i]
+				best_vr = vr[j]
+				best_P  = P[k]
+				best_delta = delta
+\end{code}
+Ut fra dette finnes de beste verdiene for $t_0,\space v_r, \space P$.
+
+For å finne de riktige verdiene har jeg laget et program som skriver ut rådata som grafer og spør om minste og maks verdiene til $t_0,\space v_r, \space P$.
+
+Koden jeg har laget formatterer først dataen fra filene 'star(0-9).txt' i arrays. Finner deretter radiell hastighet, pekuliær hastighet og plotter så $v_{rel}^{data}(t)$ funnet fra radiell og pekuliær hastighet. Plotter så lyskurven. Når disse er plottet spør den om verdiene til $t_0,\space v_r, \space P$. Ut fra disse verdiene lages $v_{rel}^{modell}(t)$. De beste verdiene brukes videre til å kalkulere massen til planeten, så skrives alle disse verdiene ut i en fil:
+
+\begin{code}
+star0.txt
+t0               vr                   P            M
+288461.538462    221.538461538    346153.846154   2.83250843895e+27
+
+star3.txt
+t0               vr                   P            M
+129871.794872    762.230769231    173000.0   5.65354532815e+27
+
+star4.txt
+t0               vr                   P            M
+519230.769231    328.512820513    1037179.48718   1.03973899226e+28
+\end{code}
+
+t0 er målt i sekunder, vr målt i $\frac{m}{s}$, P målt i sekunder, M er massen til planeten målt i kg. Jeg fant formørkelse kun på de filene over.
+
+Kjøreeksempelet under gav følgende resultatet over
+
+\begin{code}
+thomhaa@skog ~/ast1100/week2 $ python week2.py 
+Is there a planet eclipsing  star0.txt? (yes/no): yes
+type t0 min value: 270000
+type t0 max value: 300000
+type vr min value: 204
+type vr max value: 240
+type Period min value: 620000-300000
+type Period max value: 650000-270000
+type the mass of star described in star0.txt in solar masses: 0.8
+Is there a planet eclipsing  star1.txt? (yes/no): no
+Is there a planet eclipsing  star2.txt? (yes/no): no
+Is there a planet eclipsing  star3.txt? (yes/no): yes
+type t0 min value: 125000
+type t0 max value: 135000
+type vr min value: 747
+type vr max value: 780
+type Period min value: 295000-136000
+type Period max value: 310000-125000
+type the mass of star described in star3.txt in solar masses: 0.5
+Is there a planet eclipsing  star4.txt? (yes/no): yes
+type t0 min value: 500000
+type t0 max value: 550000
+type vr min value: 315
+type vr max value: 346
+type Period min value: 1.5*10**6-550000
+type Period max value: 1.6*10**6-480000
+type the mass of star described in star4.txt in solar masses: 1.8
+Is there a planet eclipsing  star5.txt? (yes/no): no
+Is there a planet eclipsing  star6.txt? (yes/no): no
+Is there a planet eclipsing  star7.txt? (yes/no): no
+Is there a planet eclipsing  star8.txt? (yes/no): no
+Is there a planet eclipsing  star9.txt? (yes/no): no
+thomhaa@skog ~/ast1100/week2 $ 
+\end{code}
+
+Og følgende grafer:
+
+\begin{figure}
+ \centering
+ \includegraphics[scale=0.3, angle=270]{pngs/star0.png}
+ \label{fig: star0}
+ \caption{Star0}
+\end{figure}
+
+\begin{figure}
+ \centering
+ \includegraphics[scale=0.3, angle=270]{pngs/star3.png}
+ \label{fig: star3}
+ \caption{Star3}
+\end{figure}
+
+\begin{figure}
+ \centering
+ \includegraphics[scale=0.3, angle=270]{pngs/star4.png}
+ \label{fig: star4}
+ \caption{Star4}
+\end{figure}
+
+\end{document}

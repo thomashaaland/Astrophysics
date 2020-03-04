@@ -1,0 +1,147 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage[latin1]{inputenc}
+\usepackage{fancyvrb}
+\DefineVerbatimEnvironment{code}{Verbatim}{fontsize=\small}
+\DefineVerbatimEnvironment{example}{Verbatim}{fontsize=\small}
+
+% Shortcuts for including equations
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\def\i{\hat{i}}
+\def\j{\hat{j}}
+\def\k{\hat{k}}
+
+% Document formatting
+\setlength{\parindent}{0mm}
+\setlength{\parskip}{1.5mm}
+
+% Hyper refs
+\usepackage[colorlinks]{hyperref}
+
+\usepackage{listings}
+\lstset{language=python}
+\lstset{basicstyle=\ttfamily\tiny}
+\lstset{frame=single}
+\lstset{stringstyle=\ttfamily}
+\lstset{keywordstyle=\color{red}\bfseries}
+\lstset{commentstyle=\itshape\color{blue}}
+\lstset{showspaces=false}
+\lstset{showstringspaces=false}
+\lstset{showtabs=true}
+\lstset{breaklines}
+\lstdefinestyle{prt}{frame=none,basicstyle=\ttfamily\small}
+
+\newcounter{subproject}
+\renewcommand{\thesubproject}{\number{subproject}}
+\newenvironment{subproj}{
+\begin{description}
+\item[\refstepcounter{subproject}(\thesubproject)]
+}{\end{description}}
+
+%------------------------------------------------------------
+\begin{document} 
+{\huge\bf Ast1100 Oblig11}
+\newline Thomas Haaland
+
+
+Gjennomsnitts Kinetisk Energi
+
+\newpage
+{\bf Oppgave 1}
+\newline
+I denne oppgaven skal vi finne $N$. Har at $n_{norm}(v)=\frac{1}{N}n(v)$
+
+Integrerer over alle mulige hastigheter fra $0$ til $\infty$:
+
+\beq
+n_{norm}(v)=\frac{1}{N}n(v)
+\eeq
+
+\beq
+\int_0^\infty n_{norm}(v)dv=\int_0^\infty \frac{1}{N}n(v)dv
+\eeq
+
+og bruker at $\int_0^\infty n_{norm}(v)dv=1$, slik at
+
+\beq
+N= \int_0^\infty n(v)dv
+\eeq
+
+Her er $n(v)dv$ Maxwell-Boltzmann distribusjonen og får
+
+\beq
+N=\int_0^\infty n\left(\frac{m}{2\pi kT}\right)^{\frac{3}{2}}e^{-\frac{mv^2}{kT}}4\pi v^2dv
+\eeq
+
+Her er k boltzmann konstanten, T er temperatur, m er massen, n er antall partikler med hastighet v. Siden det er et integral er det en sum over alle hastigheter mellom $0$ og $\infty$.
+
+{\bf Oppgave 2}
+\newline
+Skal bruke $<K>=\int_0^\infty dv K(v)n_{norm}(v)$ og finne $<K>$.
+Her er $<K>$ gjennomsnittskinetiske energi, $K(v)=\frac{1}{2}mv^2$ er kinetiske energi i hastigheten $v$ og $n_{norm}(v)=\frac{1}{N}n(v)$ er som over. Setter inn i integralet gir
+
+\beq
+<K>=\int_0^\infty \frac{1}{2}mv^2\frac{1}{N}n\left(\frac{m}{2\pi kT}\right)^{\frac{3}{2}}e^{-\frac{mv^2}{2kT}}4\pi v^2dv
+\eeq
+
+\beq
+<K>=\frac{\frac{1}{2}mn\left(\frac{m}{2\pi kT}\right)^\frac{3}{2}4\pi \int_0^\infty v^4e^{-\frac{mv^2}{2kT}}dv}{n\left(\frac{m}{2\pi kT}\right)^{\frac{3}{2}}4\pi \int_0^\infty v^2e^{-\frac{mv^2}{kT}}dv}
+\eeq
+
+Løser de to integralene hver for seg:
+
+\beq
+\int_0^\infty v^4e^{-\frac{mv^2}{kT}}dv
+\eeq
+
+Substituerer med $x = \frac{mv^2}{2kT}$, slik at $v^2=\frac{2kTx}{m}$ og $dv=\frac{kT}{mv}dx$, med samme grenser, og får at
+
+\beq
+\int_0^\infty e^{-x}v^3\frac{kT}{m}dx=\left(\frac{2kT}{m}\right)^{\frac{3}{2}}\left(\frac{kT}{m}\right)\int_0^\infty dxe^{-x}x^{\frac{3}{2}}
+\eeq
+Som gir
+\beq
+\int_0^\infty v^4e^{-\frac{mv^2}{kT}}dv=2\sqrt{2}\left(\frac{kT}{m}\right)^{\frac{5}{3}}\left(\frac{3\sqrt{\pi}}{4}\right) 
+\eeq
+
+Løser neste integral med samme substitusjon som over, og får at
+\beq
+\int_0^\infty v^2e^{-\frac{mv^2}{kT}}dv=\int_0^\infty e^{-x}\sqrt{\frac{2kT}{m}}\sqrt{x}dx\frac{kT}{m}
+\eeq
+
+som gir
+
+\beq
+\int_0^\infty v^2e^{-\frac{mv^2}{kT}}dv=\sqrt{2}\left(\frac{kT}{m}\right)^{\frac{3}{2}}\frac{\sqrt{\pi}}{2}
+\eeq
+
+Satt inn i eq.(6) blir
+
+\beq
+<K>=\frac{\frac{1}{2}m2\sqrt{2}\left(\frac{kT}{m}\right)^{\frac{5}{2}}\left(\frac{3\sqrt{\pi}}{4}\right)}{\sqrt{2}\left(\frac{kT}{m}\right)^{\frac{3}{2}}\frac{\sqrt{\pi}}{2}}=\frac{3}{2}kT\eeq
+
+{\bf Oppgave 3a)}
+\newline
+Skal finne $\sigma$. Gjør dette ved å sammenligne $P(\vec{v})=n(\vec{v})$. Ser at $v^2=\vec{v}\cdot \vec{v}$, og at 
+
+\beq
+\left(\frac{m}{2\pi kT}\right)^{\frac{3}{2}}e^{-\frac{mv^2}{2kT}}=\frac{1}{\left(2\pi \sigma^2\right)^{\frac{3}{2}}}e^{-\frac{v^2}{2\sigma^2}}
+\eeq
+dersom 
+
+\beq
+\sigma= _-^+\sqrt{\frac{kT}{m}}
+\eeq
+
+{\bf Oppgave 3 b)}
+\newline
+Lager koden og får til slutt resultatene
+
+numerisk: $1.247\cdots10^{-19}J$
+
+analytisk: $1.242\cdots10^{-19}J$
+
+\end{document}
